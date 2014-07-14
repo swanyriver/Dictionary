@@ -89,6 +89,7 @@ using namespace std;
 
 class swansonString {
 public:
+
    static bool IsALetter ( char character );
    static bool IsANumber ( char character );
    static bool AllNumbers ( string numberString );
@@ -96,6 +97,7 @@ public:
    static bool AllLetters ( string letterString );
    static bool AllLetters ( string letterString , char permitedChars[] ,
          int arraySize );
+
    static void SeperateWords ( string myString , list<string>& seperateWords );
    static string LowerCase ( string caseString );
    static string UpperCase ( string caseString );

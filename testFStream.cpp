@@ -12,8 +12,10 @@
 #include <vector>
 #include <map>
 #include "myFunctions.hpp"
+#include "Dictionary.hpp"
 using namespace std;
 
+/*
 class Dictionary{
 private:
    string mFilename;
@@ -23,10 +25,31 @@ public:
       mFilename=filename;
    }
 };
+*/
 
 int main(){
 
-   ifstream instream;
+
+    Dictionary myDictonary(false);
+
+   //inflate dictionary
+
+    myDictonary = Dictionary(4);
+
+
+
+   //dictionary testing
+    myDictonary.TestDictionary();
+
+    Dictionary shortDict(6);
+    shortDict.TestDictionary();
+
+    Dictionary failDict(Dictionary::UNRESTRICTED,"hello.txt");
+    cout << "this one success:" << failDict.succesfull;
+    getchar();
+
+
+   /*ifstream instream;
    string nextWord;
 
    map<string,long int> wordMap;
@@ -38,7 +61,7 @@ int main(){
    //list <string> words;
 
    while(!instream.eof()){
-     /* while(!swansonString::IsALetter((instream.peek()))){
+      while(!swansonString::IsALetter((instream.peek()))){
          instream.ignore(1);
       }
       string nextWord;
@@ -50,7 +73,7 @@ int main(){
       if(!nextWord.empty() && swansonString::AllLetters(nextWord) ){
          words.push_back(nextWord);
       }
-*/
+
 
       getline(instream,nextWord);
       mapValue++;
@@ -67,11 +90,11 @@ int main(){
 
 
 
-   /*
+
    while(!words.empty()){
       cout << words.back() << "/";
       words.pop_back();
-   }*/
+   }
    long int size = wordMap.size();
    cout << endl << endl << size << " words" << endl;
 
@@ -85,6 +108,6 @@ int main(){
 
 
 
-
+*/
 }
 
