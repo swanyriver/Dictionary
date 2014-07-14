@@ -34,9 +34,7 @@ int main(){
 
    //inflate dictionary
 
-    myDictonary = Dictionary(4);
-
-
+    myDictonary = Dictionary(8);
 
    //dictionary testing
     myDictonary.TestDictionary();
@@ -47,6 +45,21 @@ int main(){
     Dictionary failDict(Dictionary::UNRESTRICTED,"hello.txt");
     cout << "this one success:" << failDict.succesfull;
     getchar();
+
+
+    int numRands = 5;
+    while(numRands<=3200){
+       cout << endl <<"get "<< numRands << " randoms" << endl;
+       getchar();
+       for (int var = 0; var < numRands; ++var) {
+          cout << myDictonary.GetRandomWord() <<"/";
+       }
+       numRands = numRands*5;
+       getchar();
+    }
+
+
+
 
 
    /*ifstream instream;
