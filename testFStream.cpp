@@ -13,6 +13,7 @@
 #include <map>
 #include "myFunctions.hpp"
 #include "Dictionary.hpp"
+#include "DctionaryTester.hpp"
 using namespace std;
 
 /*
@@ -35,12 +36,15 @@ int main(){
    //inflate dictionary
 
     myDictonary = Dictionary(8);
+    DictionaryTester::TestDictionary(myDictonary);
 
    //dictionary testing
-    myDictonary.TestDictionary();
+    //myDictonary.TestDictionary();
 
     Dictionary shortDict(6);
-    shortDict.TestDictionary();
+    DictionaryTester::TestDictionary(myDictonary);
+
+    //shortDict.TestDictionary();
 
     Dictionary failDict(Dictionary::UNRESTRICTED,"hello.txt");
     cout << "this one success:" << failDict.succesfull;
