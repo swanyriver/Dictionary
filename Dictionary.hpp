@@ -205,8 +205,9 @@ private:
          }
          string nextWord;
          getline( instream , nextWord , ' ' );
-         while ( swansonString::IsALetter( !nextWord.back() ) ) {
-            nextWord.pop_back();
+         //check last character for alpha // for !.?"
+         while ( ! swansonString::IsALetter( nextWord.at(nextWord.size()-1) ) ) {
+            nextWord.erase(nextWord.size()-1,1); // delete last character
          }
 
          if ( !nextWord.empty() && swansonString::AllLetters( nextWord ) ) {
