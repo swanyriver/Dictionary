@@ -24,7 +24,6 @@
 #include "swansonUtils.hpp"
 #include "swansonString.hpp"
 
-#include <iostream> //remove when testing is finished
 
 using namespace std;
 
@@ -35,6 +34,18 @@ private:
    set<string>::iterator lookup;
 
 protected:
+   /**************************************************************
+    *
+    * * Entry: a file with only alpha, lower case, return character separated
+    *          words
+    *
+    * * Exit: wordSet is filled with unique and sorted strings
+    *          alpha only, lowercase, excluding ones greater than max length
+    *
+    * * Purpose: to parse a file into WORDS, for dictionary data set
+    *
+    *
+    * ***************************************************************/
    virtual void ReadFromFile ( fstream &instream , set<string> &wordSet ,
          const int MaxWordLength ) {
 
@@ -52,21 +63,17 @@ protected:
 
    /**************************************************************
     *
-    * * Entry: a file with only alpha, lower case, return character separated
-    *          words
+    * * Entry: an existing file at <filename>
     *
     * * Exit: an inflated map
     *
-    *
-    * * Purpose:  read all words from a file,
-    *             excluding ones greater than max length
+    * * Purpose:  open and close dictionary file, report failures to inflate
+    *    data set
     *
     * ***************************************************************/
    bool InflateDict ( string filename , const int MaxWordLength ) {
 
       fstream instream;
-
-      cout << "inside inflate now,  filename is " << filename << endl;
 
       //open dictionary file
       instream.open( filename.c_str() );
@@ -98,8 +105,9 @@ public:
    }
    Dictionary ( int maxWordLenght = UNRESTRICTED , string filename =
          "dictionary.txt" , bool construct = true) {
-
-      cout << "inside constructor filename is " << filename << endl;
+      //inflates on construction by default
+      //sub classes can override ReadFromFile() method, and must call inflate
+      //in their own constructors
       if(construct)
          constructionWasSuccesfull = InflateDict( filename , maxWordLenght );
       else
@@ -130,6 +138,8 @@ public:
       return wordSet.size();
    }
 
+   //returns string at a given position
+   //only useful for a specialized generation of random numbers for access
    string GetWordAt ( int position ) {
       lookup = wordSet.begin();
       advance( lookup , position );
@@ -142,43 +152,17 @@ public:
       return GetWordAt( position );
    }
 
-   //for testing
-   set<string>::iterator GetIterator(){
-      return wordSet.begin();
-   }
 };
 
 /**************************************************************
- *
- * * Entry:
- *
- *
- * * Exit:
- *
- *
  * * Purpose: A dictionary object with a non optimized input stream file
  *            Considerably longer input time but possibly more fun
- *
- *
  * ***************************************************************/
 
 class ThemeDictionary: public Dictionary {
 public:
 
    ///constructors
-   /*ThemeDictionary ( bool dummy ) : Dictionary(dummy){}  //call parent constructor
-   ThemeDictionary ( int maxWordLenght = UNRESTRICTED , string filename =
-         "dictionary.txt" ) :Dictionary(maxWordLenght,filename){}
-*/
-   /*ThemeDictionary ( bool dummy ) {
-      constructionWasSuccesfull = false; //used to instantiate an empty dictionary
-   }
-   ThemeDictionary ( int maxWordLenght = UNRESTRICTED , string filename =
-         "dictionary.txt" ) {
-      cout << "inside child constructor filename is " << filename << endl;
-      constructionWasSuccesfull = InflateDict( filename , maxWordLenght );
-   }*/
-
    ThemeDictionary ( bool dummy ) : Dictionary(dummy){}  //call parent constructor
    ThemeDictionary ( int maxWordLenght = UNRESTRICTED , string filename =
          "dictionary.txt" , bool construct = false)
@@ -197,19 +181,23 @@ public:
 
 
 private:
+   /**************************************************************
+    *
+    * * Entry: a file with something in it, preferably at some point in it
+    *          combinations of alpha characters separated by spaces on one or
+    *          both sides, and comprised of intelligible words.
+    *
+    * * Exit: wordSet is filled with unique and sorted strings
+    *          alpha only, lowercase, excluding ones greater than max length
+    *
+    * * Purpose: to parse a file into WORDS, for dictionary data set
+    *
+    *
+    * ***************************************************************/
    void ReadFromFile ( fstream &instream , set<string> &wordSet ,
          const int MaxWordLength ) {
 
-      //testing
-      ofstream output;
-      output.open("wordsgotten.txt");
-
-
       string nextWord;
-
-      cout << "subclass method is running";
-      getchar();
-
 
       while ( !instream.eof() ) {
          while ( !swansonString::IsALetter( (instream.peek()) ) ) {
@@ -222,22 +210,13 @@ private:
          }
 
          if ( !nextWord.empty() && swansonString::AllLetters( nextWord ) ) {
+
             nextWord = swansonString::LowerCase(nextWord);
-
-            if(!IsAWord(nextWord)) output << nextWord << endl; //testingß
-
             wordSet.insert(nextWord);
-
-
-
-            //if(wordSet.count(nextWord)==0)wordSet.insert( nextWord );
-            //if(!IsAWord(nextWord)) wordSet.insert( nextWord );
 
          }
 
       }
-
-      output.close();
 
    }
 
