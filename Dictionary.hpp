@@ -24,7 +24,6 @@
 #include "swansonUtils.hpp"
 #include "swansonString.hpp"
 
-
 using namespace std;
 
 class Dictionary {
@@ -34,6 +33,9 @@ private:
    set<string>::iterator lookup;
 
 protected:
+
+   bool constructionWasSuccesfull;
+
    /**************************************************************
     *
     * * Entry: a file with only alpha, lower case, return character separated
@@ -96,27 +98,32 @@ protected:
    }
 
 public:
-   bool constructionWasSuccesfull;
    static const int UNRESTRICTED = -1;
+   static const string DICTIONARY_EMPTY;
+   static const string OUT_OF_BOUNDS;
 
    ///constructors
    Dictionary ( bool dummy ) {
       constructionWasSuccesfull = false; //used to instantiate an empty dictionary
    }
    Dictionary ( int maxWordLenght = UNRESTRICTED , string filename =
-         "dictionary.txt" , bool construct = true) {
+         "dictionary.txt" , bool construct = true ) {
       //inflates on construction by default
       //sub classes can override ReadFromFile() method, and must call inflate
       //in their own constructors
-      if(construct)
+      if ( construct )
          constructionWasSuccesfull = InflateDict( filename , maxWordLenght );
       else
          constructionWasSuccesfull = false;
    }
 
+   bool Filled () {
+      return constructionWasSuccesfull;
+   }
+
    /**************************************************************
     *
-    * * Entry:an inflated map
+    * * Entry:an inflated set
     *
     *
     * * Exit:true if map contains 1 or more of element, false otherwise
@@ -141,6 +148,12 @@ public:
    //returns string at a given position
    //only useful for a specialized generation of random numbers for access
    string GetWordAt ( int position ) {
+
+      if ( !Filled() )
+         return DICTIONARY_EMPTY;
+      if ( position < 0 || position > NumWords() - 1 )
+         return OUT_OF_BOUNDS;
+
       lookup = wordSet.begin();
       advance( lookup , position );
       return *lookup;
@@ -148,11 +161,19 @@ public:
    }
 
    string GetRandomWord () {
-      int position = swansonUtil::GetRandomInRange( NumWords()- 1 );
+      if ( !Filled() )return DICTIONARY_EMPTY;
+
+      int position = swansonUtil::GetRandomInRange( NumWords() - 1 );
       return GetWordAt( position );
    }
 
 };
+
+///PUBLIC ERROR CODES////////////////////////////////////////////
+const string Dictionary::DICTIONARY_EMPTY = "DICTIONARY_EMPTY";
+const string Dictionary::OUT_OF_BOUNDS = "OUT_OF_BOUNDS";
+///PUBLIC ERROR CODES///////////////////////////////////////////
+
 
 /**************************************************************
  * * Purpose: A dictionary object with a non optimized input stream file
@@ -163,10 +184,12 @@ class ThemeDictionary: public Dictionary {
 public:
 
    ///constructors
-   ThemeDictionary ( bool dummy ) : Dictionary(dummy){}  //call parent constructor
+   ThemeDictionary ( bool dummy ) :
+         Dictionary( dummy ) {
+   }  //call parent constructor
    ThemeDictionary ( int maxWordLenght = UNRESTRICTED , string filename =
-         "dictionary.txt" , bool construct = false)
-         :Dictionary(maxWordLenght,filename,false){
+         "dictionary.txt" , bool construct = false ) :
+         Dictionary( maxWordLenght , filename , false ) {
       /*must use this two staged inflation,  base class will by default
        * inflate upon construction, but then the overridden subclass method
        * is not called during the inflate method, because the 'this' pointer
@@ -174,11 +197,9 @@ public:
        * =false flag is sent to the super constructor to prevent it from
        * inflating using parent method default arguments, then the derived
        * class inflates with its specialized word parsing method
-      */
+       */
       constructionWasSuccesfull = InflateDict( filename , maxWordLenght );
    }
-
-
 
 private:
    /**************************************************************
@@ -206,21 +227,20 @@ private:
          string nextWord;
          getline( instream , nextWord , ' ' );
          //check last character for alpha // for !.?"
-         while ( ! swansonString::IsALetter( nextWord.at(nextWord.size()-1) ) ) {
-            nextWord.erase(nextWord.size()-1,1); // delete last character
+         while ( !swansonString::IsALetter( nextWord.at( nextWord.size() - 1 ) ) ) {
+            nextWord.erase( nextWord.size() - 1 , 1 ); // delete last character
          }
 
          if ( !nextWord.empty() && swansonString::AllLetters( nextWord ) ) {
 
-            nextWord = swansonString::LowerCase(nextWord);
-            wordSet.insert(nextWord);
+            nextWord = swansonString::LowerCase( nextWord );
+            wordSet.insert( nextWord );
 
          }
 
       }
 
    }
-
 
 };
 
