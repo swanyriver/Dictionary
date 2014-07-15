@@ -1,2 +1,2 @@
-hellomake: swansonString.cpp swansonUtils.cpp swansonInput.cpp testFStream.cpp
-	g++ swansonString.cpp swansonUtils.cpp swansonInput.cpp testFStream.cpp -o fstreamFun && ./fstreamFun
+hellomake: DictionaryDemo.cpp 
+	g++ -o dictionary DictionaryDemo.cpp && ./dictionary
