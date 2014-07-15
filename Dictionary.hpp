@@ -148,7 +148,7 @@ public:
    }
 
    string GetRandomWord () {
-      int position = swansonUtil::GetRandomInRange( NumWords() );
+      int position = swansonUtil::GetRandomInRange( NumWords()- 1 );
       return GetWordAt( position );
    }
 

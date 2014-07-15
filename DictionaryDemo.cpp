@@ -19,6 +19,18 @@ int main () {
    cout << "there are " << mobyDict.NumWords() << " unique words in this text"
          << endl;
 
+   //cout << mobyDict.GetWordAt(0) << "/";
+   // getchar();
+   //cout << mobyDict.GetWordAt(1);
+   //getchar();
+
+   if(!mobyDict.constructionWasSuccesfull){
+	cout << endl;
+	cout << "something bad has happened";
+	return(1);	
+    }
+
+
    do {
       cout << "\n\n\n\n\n";
       for ( int i = 0 ; i < 20 ; i++ ) {
