@@ -16,12 +16,14 @@
 #ifndef DICTIONARY_HPP_
 #define DICTIONARY_HPP_
 
-//#include <iostream>  //might be extraneous
+
 #include <fstream>
 #include <string>
 #include <set>
-#include <algorithm> //for string compare, used by set<>
+#include <algorithm> //for string compare less<string>, used by set<>
 #include <iterator>
+#include "swansonUtils.hpp"
+
 using namespace std;
 
 class Dictionary {
@@ -112,6 +114,7 @@ public:
       lookup = wordSet.begin();
       advance(lookup, position);
       return *lookup;
+
    }
 
    string GetRandomWord(){
@@ -128,26 +131,3 @@ public:
 
 #endif /* DICTIONARY_HPP_ */
 
-/*
-//////////////////////test functions of dictionary /////////////////////////
-void TestDictionary () {
-   const int NUMRANDOM = 10;
-   long int size = wordSet.size();
-   cout << endl << endl << size << " words" << endl;
-
-   string test[] = { "hello", "goodbye", "toodaloo", "6454klj", "thank you",
-         "japan", "frost" };
-
-   for ( int i = 0 ; i < 7 ; i++ ) {
-      cout << test[i]
-            << (IsAWord( test[i] ) ? " is a word" : " isn't a word") << endl;
-
-   }
-   cout << endl << "random words" << endl;
-   for ( int i = 0 ; i < NUMRANDOM ; i++ ) cout << GetRandomWord() << endl;
-
-
-   getchar();
-}
-///////////////////////end of test functions ///////////////////////////////
-*/

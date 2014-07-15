@@ -11,9 +11,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "myFunctions.hpp"
 #include "Dictionary.hpp"
-#include "DctionaryTester.hpp"
+#include "DictionaryTester.hpp"
 using namespace std;
 
 /*
