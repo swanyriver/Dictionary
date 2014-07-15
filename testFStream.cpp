@@ -7,12 +7,13 @@
 
 
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <vector>
+#include <cstdlib>
 #include <map>
 #include "Dictionary.hpp"
 #include "DictionaryTester.hpp"
+#include "swansonInput.hpp"
 using namespace std;
 
 /*
@@ -34,96 +35,53 @@ int main(){
 
    //inflate dictionary
 
-    myDictonary = Dictionary(8);
-    DictionaryTester::TestDictionary(myDictonary);
+    ThemeDictionary greyDict(Dictionary::UNRESTRICTED, "grey.txt");
+   //ThemeDictionary greyDict;
+   //ThemeDictionary *point= new ThemeDictionary(Dictionary::UNRESTRICTED, "grey.txt");
+   //greyDict = *point;
+    //Dictionary greyDict = ThemeDictionary(Dictionary::UNRESTRICTED, "grey.txt");
 
-   //dictionary testing
-    //myDictonary.TestDictionary();
+
+    cout << "this one success:" << greyDict.constructionWasSuccesfull;
+    cout << "there are " << greyDict.NumWords() << " words in this text" << endl;
+    DictionaryTester::TestDictionary(greyDict);
+
+
+
+   myDictonary = Dictionary(8);
+   DictionaryTester::TestDictionary(myDictonary);
+
 
     Dictionary shortDict(6);
     DictionaryTester::TestDictionary(myDictonary);
 
-    //shortDict.TestDictionary();
 
     Dictionary failDict(Dictionary::UNRESTRICTED,"hello.txt");
-    cout << "this one success:" << failDict.succesfull;
-    getchar();
+    cout << "this one success:" << failDict.constructionWasSuccesfull;
+
+    //getchar();
+
+   do {
+      cout << "\n\n\n\n\n";
+      for(int i=0; i<20; i++){
+         int numwords = swansonUtil::GetRandomInRange(4,9);
+         for (int x=0;x<numwords;x++){
+            cout << greyDict.GetRandomWord() << " ";
+         }
+         cout << endl;
+      }
+   } while (swansonInput::yesNo("more phrases"));
 
 
+    /*///test random retrival
     int numRands = 5;
     while(numRands<=3200){
        cout << endl <<"get "<< numRands << " randoms" << endl;
        getchar();
        for (int var = 0; var < numRands; ++var) {
-          cout << myDictonary.GetRandomWord() <<"/";
+          cout << greyDict.GetRandomWord() <<"/";
        }
        numRands = numRands*5;
        getchar();
-    }
-
-
-
-
-
-   /*ifstream instream;
-   string nextWord;
-
-   map<string,long int> wordMap;
-   long int mapValue =0;
-
-   instream.open("dictionary.txt");
-   cout << "opened";
-
-   //list <string> words;
-
-   while(!instream.eof()){
-      while(!swansonString::IsALetter((instream.peek()))){
-         instream.ignore(1);
-      }
-      string nextWord;
-      getline(instream,nextWord,' ');
-      while(swansonString::IsALetter(!nextWord.back())){
-         nextWord.pop_back();
-      }
-
-      if(!nextWord.empty() && swansonString::AllLetters(nextWord) ){
-         words.push_back(nextWord);
-      }
-
-
-      getline(instream,nextWord);
-      mapValue++;
-      wordMap[nextWord] = mapValue;
-      //cout << "adding word " << nextWord;
-
-
-
-   }
-   //words added
-
-   instream.close();
-
-
-
-
-
-   while(!words.empty()){
-      cout << words.back() << "/";
-      words.pop_back();
-   }
-   long int size = wordMap.size();
-   cout << endl << endl << size << " words" << endl;
-
-   string test[] = {"hello","goodbye","toodaloo", "6454klj", "thank you", "japan", "frost"};
-
-   for(int i=0; i<7; i++){
-      cout << test[i] << ((wordMap.count(test[i])>0)? " is a word": " isn't a word" ) << endl;
-   }
-
-   return 0;
-
-
-
-*/
+    }*/
 }
-
